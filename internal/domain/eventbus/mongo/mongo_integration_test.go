@@ -20,10 +20,7 @@ func TestPocketEventSuccess(t *testing.T) {
 
 	repo := NewRepository(collWrap, clientWrap)
 
-	evtAgg, err := eventbus.NewEventBus()
-	if err != nil {
-		t.Error("error init eventer aggregate")
-	}
+	evtAgg := eventbus.NewEventBus()
 
 	eventCreated := entity.EventPocketCreated{
 		EventId:   uuid.New(),
@@ -68,7 +65,7 @@ func TestPocketEventSuccess(t *testing.T) {
 	evtAgg.AddEvent(eventAddedTransaction)
 	evtAgg.AddEvent(eventAddedTransactionTwo)
 
-	err = repo.InsertEvents(evtAgg)
+	err := repo.InsertEvents(evtAgg)
 
 	assert.Nil(t, err)
 }

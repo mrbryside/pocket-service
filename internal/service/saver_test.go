@@ -25,11 +25,23 @@ func TestSaverService(t *testing.T) {
 			desc: "Test Create Pocket Success should return error=nil",
 			mockFunc: func(mockSo *mockSaverDomain.MockOperation, mockEr *mockEventBusDomain.MockRepository) {
 				mockSo.EXPECT().InsertPocket(gomock.Any()).Return(nil)
+				mockEr.EXPECT().InsertEvents(gomock.Any()).Return(nil)
 			},
 			pocketId:   uuid.New(),
 			pocketName: "bank pocket",
 			pocketIcon: "this is icon",
 			error:      false,
+		},
+		{
+			desc: "Test Create Pocket Success should return error=nil",
+			mockFunc: func(mockSo *mockSaverDomain.MockOperation, mockEr *mockEventBusDomain.MockRepository) {
+				mockSo.EXPECT().InsertPocket(gomock.Any()).Return(nil)
+				mockEr.EXPECT().InsertEvents(gomock.Any()).Return(errors.New("error insert events"))
+			},
+			pocketId:   uuid.New(),
+			pocketName: "bank pocket",
+			pocketIcon: "this is icon",
+			error:      true,
 		},
 		{
 			desc: "Test Create Pocket init aggregate failed should return error",

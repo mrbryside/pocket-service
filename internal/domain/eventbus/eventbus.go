@@ -10,7 +10,7 @@ type EventBus struct {
 	event entity.Event // root entity
 }
 
-func NewEventBus() (*EventBus, error) {
+func NewEventBus() *EventBus {
 	evt := entity.Event{
 		Id:        uuid.New(),
 		AllEvents: make([]interface{}, 0),
@@ -18,7 +18,7 @@ func NewEventBus() (*EventBus, error) {
 
 	return &EventBus{
 		event: evt,
-	}, nil
+	}
 }
 
 func (e *EventBus) EventEntity() entity.Event {
@@ -31,4 +31,8 @@ func (e *EventBus) AllEvents() []interface{} {
 
 func (e *EventBus) AddEvent(evt interface{}) {
 	e.event.AllEvents = append(e.event.AllEvents, evt)
+}
+
+func (e *EventBus) AddEvents(evt []interface{}) {
+	e.event.AllEvents = append(e.event.AllEvents, evt...)
 }

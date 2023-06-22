@@ -37,5 +37,14 @@ func (ss saverService) InsertPocket(pocketId uuid.UUID, pocketName string, pocke
 	if err != nil {
 		return err
 	}
+
+	eb := eventbus.NewEventBus()
+	eb.AddEvents(saverAgg.EventVo().AllEvents)
+
+	err = ss.eventbusRepo.InsertEvents(eb)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

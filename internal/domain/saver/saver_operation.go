@@ -11,6 +11,10 @@ func (s *Saver) PocketEntity() entity.Pocket {
 	return s.pocket
 }
 
+func (s *Saver) EventVo() entity.Event {
+	return s.event
+}
+
 func (s *Saver) AddPocketCreatedEvent(pocketId uuid.UUID) error {
 	if pocketId == uuid.Nil {
 		return errors.New("error add pocket created event")

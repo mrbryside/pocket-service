@@ -22,10 +22,7 @@ func TestInsertEventsSuccess(t *testing.T) {
 	mockColl.EXPECT().InsertMany(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil, nil)
 
 	repo := NewRepository(mockColl, mockClient)
-	evtAgg, err := eventbus.NewEventBus()
-	if err != nil {
-		t.Errorf("error init eventer aggregate %s", err.Error())
-	}
+	evtAgg := eventbus.NewEventBus()
 
 	eventCreated := entity.EventPocketCreated{
 		EventId:   uuid.New(),
@@ -38,6 +35,6 @@ func TestInsertEventsSuccess(t *testing.T) {
 
 	evtAgg.AddEvent(eventCreated)
 
-	err = repo.InsertEvents(evtAgg)
+	err := repo.InsertEvents(evtAgg)
 	assert.Nil(t, err)
 }
