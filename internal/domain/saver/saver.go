@@ -36,7 +36,7 @@ func NewTransactionSaver(pocketId uuid.UUID) (*Saver, error) {
 		return &Saver{}, errors.New("error init saver aggregate")
 	}
 
-	pocket := entity.Pocket{Id: uuid.New(), Name: "", Icon: ""}
+	pocket := entity.Pocket{Id: pocketId, Name: "", Icon: ""}
 	transactions := make([]entity.Transaction, 0)
 	allEvents := make([]interface{}, 0)
 

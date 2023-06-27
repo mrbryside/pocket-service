@@ -3,12 +3,15 @@ package service
 import (
 	"github/mrbryside/pocket-service/internal/domain/eventbus"
 	"github/mrbryside/pocket-service/internal/domain/saver"
+	"github/mrbryside/pocket-service/internal/entity"
+	"time"
 
 	"github.com/google/uuid"
 )
 
 type ISaverService interface {
-	InsertPocket(pocketId uuid.UUID, pocketName, pocketIcon string) error
+	InsertPocket(pocketName, pocketIcon string) error
+	InsertTransaction(pocketId uuid.UUID, amount float32, category string) error
 }
 
 type saverService struct {
@@ -23,17 +26,41 @@ func NewSaverService(so saver.Operation, er eventbus.Repository) ISaverService {
 	}
 }
 
-func (ss saverService) InsertPocket(pocketId uuid.UUID, pocketName string, pocketIcon string) error {
+func (ss saverService) InsertPocket(pocketName string, pocketIcon string) error {
 	saverAgg, err := saver.NewSaver(pocketName, pocketIcon)
-	if err != nil {
-		return err
-	}
-	err = saverAgg.AddPocketCreatedEvent(pocketId)
 	if err != nil {
 		return err
 	}
 
 	err = ss.saverOperation.InsertPocket(saverAgg)
+	if err != nil {
+		return err
+	}
+
+	eb := eventbus.NewEventBus()
+	eb.AddEvents(saverAgg.EventVo().AllEvents)
+
+	err = ss.eventbusRepo.InsertEvents(eb)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (ss saverService) InsertTransaction(pocketId uuid.UUID, amount float32, category string) error {
+	saverAgg, err := saver.NewTransactionSaver(pocketId)
+	if err != nil {
+		return err
+	}
+	tVo := entity.Transaction{
+		Amount:    amount,
+		Category:  category,
+		CreatedAt: time.Now(),
+	}
+	saverAgg.AddTransaction(tVo)
+
+	err = ss.saverOperation.InsertTransaction(saverAgg)
 	if err != nil {
 		return err
 	}

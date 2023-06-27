@@ -15,3 +15,8 @@ func (o operation) InsertPocket(s *saver.Saver) error {
 	}
 	return nil
 }
+
+func (o operation) InsertTransaction(s *saver.Saver) error {
+	s.AddTransactionAddedEvent()
+	return nil
+}

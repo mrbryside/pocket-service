@@ -1,6 +1,7 @@
 package mongo
 
 import (
+	"errors"
 	"github/mrbryside/pocket-service/internal/domain/eventbus"
 	"github/mrbryside/pocket-service/internal/entity"
 	"time"
@@ -16,11 +17,15 @@ func (r Repository) insertPocketTransactionAddedEvent(e *eventbus.EventBus, sc m
 		for _, evt := range itaEvents {
 			filter := bson.M{"pocket_id": evt.PocketId}
 			update := bson.M{"$push": bson.M{"events": evt}}
-			_, err := r.pocketCollection.UpdateOne(sc, filter, update)
+			result, err := r.pocketCollection.UpdateOne(sc, filter, update)
 			if err != nil {
 				return err
 			}
+			if result.MatchedCount == 0 {
+				return errors.New("filter not found")
+			}
 		}
+
 	}
 	return nil
 }
