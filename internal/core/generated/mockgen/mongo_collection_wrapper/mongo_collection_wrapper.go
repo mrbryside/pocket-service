@@ -36,6 +36,25 @@ func (m *MockCollectionWrapper) EXPECT() *MockCollectionWrapperMockRecorder {
 	return m.recorder
 }
 
+// FindOne mocks base method.
+func (m *MockCollectionWrapper) FindOne(ctx context.Context, filter interface{}, opts ...*options.FindOneOptions) *mongo.SingleResult {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{ctx, filter}
+	for _, a := range opts {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "FindOne", varargs...)
+	ret0, _ := ret[0].(*mongo.SingleResult)
+	return ret0
+}
+
+// FindOne indicates an expected call of FindOne.
+func (mr *MockCollectionWrapperMockRecorder) FindOne(ctx, filter interface{}, opts ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{ctx, filter}, opts...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindOne", reflect.TypeOf((*MockCollectionWrapper)(nil).FindOne), varargs...)
+}
+
 // InsertMany mocks base method.
 func (m *MockCollectionWrapper) InsertMany(ctx context.Context, documents []interface{}, opts ...*options.InsertManyOptions) (*mongo.InsertManyResult, error) {
 	m.ctrl.T.Helper()

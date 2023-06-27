@@ -8,9 +8,9 @@ import (
 )
 
 type Saver struct {
-	pocket       entity.Pocket
-	transactions []entity.Transaction
-	event        entity.Event
+	pocket       entity.Pocket        // root entity
+	transactions []entity.Transaction // value object
+	event        entity.Event         // value object
 }
 
 func NewSaver(name string, icon string) (*Saver, error) {

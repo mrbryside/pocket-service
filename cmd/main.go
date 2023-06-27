@@ -4,6 +4,7 @@ import (
 	"context"
 	"github/mrbryside/pocket-service/internal/core/db/mongodb"
 	"github/mrbryside/pocket-service/internal/domain/eventbus/mongo"
+	mongoEv "github/mrbryside/pocket-service/internal/domain/eventgen/mongo"
 	"github/mrbryside/pocket-service/internal/domain/saver/event"
 	"github/mrbryside/pocket-service/internal/server/echo"
 	"github/mrbryside/pocket-service/internal/service"
@@ -17,7 +18,9 @@ func main() {
 		mongodb.MongoDBModule,
 		mongo.EventBusRepoModule,
 		event.SaverDomainModule,
+		mongoEv.EventGenRepoModule,
 		service.SaverServiceModule,
+		service.EventGenServiceModule,
 		echo.MainHandlerModule,
 		echo.EchoServerModule,
 		fx.Invoke(run),

@@ -47,3 +47,17 @@ func (mr *MockOperationMockRecorder) InsertPocket(s interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertPocket", reflect.TypeOf((*MockOperation)(nil).InsertPocket), s)
 }
+
+// InsertTransaction mocks base method.
+func (m *MockOperation) InsertTransaction(s *saver.Saver) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "InsertTransaction", s)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// InsertTransaction indicates an expected call of InsertTransaction.
+func (mr *MockOperationMockRecorder) InsertTransaction(s interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertTransaction", reflect.TypeOf((*MockOperation)(nil).InsertTransaction), s)
+}

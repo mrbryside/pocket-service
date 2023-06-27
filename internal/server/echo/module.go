@@ -13,7 +13,7 @@ var EchoServerModule = fx.Module("EchoServerModule",
 )
 
 var MainHandlerModule = fx.Module("MainHandlerModule",
-	fx.Provide(func(ss service.ISaverService) Handler {
-		return NewHandler(ss)
+	fx.Provide(func(ss service.ISaverService, eg service.IEventGenService) Handler {
+		return NewHandler(ss, eg)
 	}),
 )

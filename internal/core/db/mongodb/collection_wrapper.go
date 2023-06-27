@@ -13,6 +13,8 @@ type CollectionWrapper interface {
 		opts ...*options.UpdateOptions) (*mongo.UpdateResult, error)
 	InsertMany(ctx context.Context, documents []interface{},
 		opts ...*options.InsertManyOptions) (*mongo.InsertManyResult, error)
+	FindOne(ctx context.Context, filter interface{},
+		opts ...*options.FindOneOptions) *mongo.SingleResult
 }
 
 type Collection struct {
@@ -27,4 +29,9 @@ func (c Collection) InsertMany(ctx context.Context, documents []interface{},
 func (c Collection) UpdateOne(ctx context.Context, filter interface{}, update interface{},
 	opts ...*options.UpdateOptions) (*mongo.UpdateResult, error) {
 	return c.Collection.UpdateOne(ctx, filter, update, opts...)
+}
+
+func (c Collection) FindOne(ctx context.Context, filter interface{},
+	opts ...*options.FindOneOptions) *mongo.SingleResult {
+	return c.Collection.FindOne(ctx, filter, opts...)
 }
